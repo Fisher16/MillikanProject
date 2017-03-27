@@ -10,7 +10,7 @@ import java.awt.*;
  * 
  * Maybe spinners.
  * 
- * @author AR MK
+ * @author MK
  *
  */
 public class SliderTexted extends JPanel {
