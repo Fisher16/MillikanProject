@@ -109,7 +109,10 @@ public class AnimationInterface extends JPanel {
 		startButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	if(startButton.getText()=="ON")startButton.setText("OFF");
+		    	if(startButton.getText()=="ON"){
+		    		startButton.setText("OFF");
+		    		
+		    	}
 		    	else startButton.setText("ON");
 		    }
 		});
