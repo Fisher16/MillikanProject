@@ -97,16 +97,28 @@ public class AnimationInterface extends JPanel {
 		sDist.slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-            	animationPanel.setGap((int)sDist.getValue()*animationPanel.getHeight()/24/2);
-            	//System.out.println(Integer.toString((int)animationPanel.gap));
+            	animationPanel.setGap((int)sDist.getValue()*2);
             }
         });
 		
 		c.gridy=6;
-		this.add(new SliderTexted(1,9000,1,4),c);
+		SliderTexted sVol=new SliderTexted(1,9000,1,4);
+		this.add(sVol,c);
 		c.gridy=8;
 		this.add(new SliderTexted(1,1000,10,4),c);
+		//Animation
 		
+		Timer timer = new Timer(10, new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            if(animationPanel.drop.y>-10&&animationPanel.drop.y<(animationPanel.getHeight()-60)){
+	            	animationPanel.drop.nextPos((double)0.1, animationPanel, sVol.slider);
+	            	animationPanel.repaint();
+	            }else animationPanel.drop.reset();
+	         
+	            System.out.println(animationPanel.drop.ay);
+	        }
+	    });
 		
 		//On/Off button
 		c.gridx=3;
@@ -124,11 +136,28 @@ public class AnimationInterface extends JPanel {
 		    public void actionPerformed(ActionEvent e) {
 		    	if(startButton.getText()=="ON"){
 		    		startButton.setText("OFF");
-		    		
+		    		timer.start();
 		    	}
-		    	else startButton.setText("ON");
+		    	else {
+		    		timer.stop();
+		    		startButton.setText("ON");
+		    	}
 		    }
 		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 

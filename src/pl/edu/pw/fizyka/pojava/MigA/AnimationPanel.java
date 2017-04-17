@@ -1,7 +1,7 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
 import java.awt.*;
-//import java.awt.event.ActionListener;
+import java.awt.event.*;
 //import java.awt.geom.Line2D;
 import pl.edu.pw.fizyka.pojava.MigA.Droplet;
 import javax.swing.*;
@@ -11,16 +11,15 @@ public class AnimationPanel extends JPanel  {
 	int width=this.getWidth();
 	int height=this.getHeight();
 	int gap=0;
-	//int dropx=width/2;
-	//int dropy=height/2;
+	public Droplet drop=new Droplet(this);
 	
 	//in ms
 	int delay=1000;
-	//center of capacitor
-	int halfcap= height-2*Droplet.dist;
+
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
-		this.setGap(12*height/24/2);
+		//this.setGap(12*height/24/2);
+		System.out.println(Integer.toString((int)drop.x));
 	}
 	
 
@@ -31,8 +30,8 @@ public class AnimationPanel extends JPanel  {
         Graphics2D graph = (Graphics2D)g;
         graph.clearRect(0, 0, getWidth(), getHeight());            
         graph.setColor(Color.blue);
-        
-        graph.fillOval(Droplet.x, Droplet.y, Droplet.diam, Droplet.diam+10);     
+        drop.setx(this.getWidth()/2);
+        graph.fillOval(drop.x, drop.y, 10,10);     
         /*// capacitor
 	
 	    Line2D lin = new Line2D.Float(180, 400, 300, 400);
@@ -55,7 +54,21 @@ public class AnimationPanel extends JPanel  {
 		this.repaint();
 	}
 	
-	/* ActionListener taskPerformer = new ActionListener() {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	ActionListener taskPerformer = new ActionListener() {
 	      public void actionPerformed(ActionEvent evt) {
 	    	//fall stop in capacitor 
 	        	if(y>=halfcap && Droplet.volts == 5081){
@@ -89,10 +102,6 @@ public class AnimationPanel extends JPanel  {
 	}*/
 	
 	
-	
-	
-	
-	
-	
+
 	
 }
