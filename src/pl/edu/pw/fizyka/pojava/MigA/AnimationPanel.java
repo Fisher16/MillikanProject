@@ -1,20 +1,25 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
-import java.awt.Color;
-import java.awt.LayoutManager;
-
-
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.geom.Line2D;
-
+import pl.edu.pw.fizyka.pojava.MigA.Droplet;
 import javax.swing.*;
 
-public class AnimationPanel extends JPanel {
+public class AnimationPanel extends JPanel  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3960445104787308557L;
 	int width=this.getWidth();
 	int height=this.getHeight();
-	int dropx=width/2;
-	int dropy=height/2;
+	//int dropx=width/2;
+	//int dropy=height/2;
 	
+	//in ms
+	int delay=1000;
+	//center of capacitor
+	int halfcap= height-2*Droplet.dist;
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
 	}
@@ -22,22 +27,47 @@ public class AnimationPanel extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-
-	    // Ustawiamy kolor kulek
-	    setForeground(Color.BLUE);
-	    Graphics2D g2 = (Graphics2D)g;
-
-	    // Kasujemy obszar animacji
-	    g2.clearRect(0, 0, getWidth(), getHeight());
+	
+		//droplet
+        Graphics2D graph = (Graphics2D)g;
+        graph.clearRect(0, 0, getWidth(), getHeight());            
+        graph.setColor(Color.blue);
+        
+        graph.fillOval(Droplet.x, Droplet.y, Droplet.diam, Droplet.diam+10);     
+        // capacitor
+	
+	    Line2D lin = new Line2D.Float(180, 400, 300, 400);
+	    Line2D lin2 = new Line2D.Float(180, 400-Droplet.dist, 300, 400-Droplet.dist);
+	    graph.draw(lin);
+	    graph.draw(lin2);
+	    
 	   
-	    // Wyświetlamy kulki
-	   this.print(g2);
+	   
 
 	}
+	 ActionListener taskPerformer = new ActionListener() {
+	      public void actionPerformed(ActionEvent evt) {
+	    	//fall stop in capacitor 
+	        	if(y>=halfcap && Droplet.volts == 5081){
+	        		stop();
+		        
+		        	}
+		        	
+	            //touching the ground
+	        	else if(y + Droplet.diam+10 > getHeight() || y < 0){
+	        		stop();
+	        	}
+	        	else{
+	        		repaint();
+	        	}
+	      }
+	  };
+	  new Timer(delay, taskPerformer).start();
 
-	private void print(Graphics2D g) {
+/*	private void print(Graphics2D g) {
+		//drawing
 	    g.fillOval((int) dropx, (int) dropy, 2,2);
-	}
+	}*/
 	
 	/*public void iterate(double dt){
 
