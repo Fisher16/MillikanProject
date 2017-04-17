@@ -20,6 +20,7 @@ public class AnimationPanel extends JPanel  {
 	int halfcap= height-2*Droplet.dist;
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
+		this.setGap(12*height/24/2);
 	}
 	
 
