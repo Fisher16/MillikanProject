@@ -4,8 +4,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import pl.edu.pw.fizyka.pojava.MigA.SliderTexted;
+import pl.edu.pw.fizyka.pojava.MigA.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,13 +30,14 @@ public class AnimationInterface extends JPanel {
 	    TitledBorder tB = BorderFactory.createTitledBorder(lowerEtched, "Place Holder");
 	    c.fill = GridBagConstraints.BOTH;
 	    
-		JPanel AnimationPanel=new JPanel();
-		AnimationPanel.setBackground(Color.darkGray);
+	    
+	    //Animation Panel
+		AnimationPanel animationPanel=new AnimationPanel();
 		
 		c.gridx=0;c.gridy=0;
 		c.gridwidth=3;c.gridheight=7;
 		c.weightx = 7;c.weighty=7;
-		this.add(AnimationPanel,c);
+		this.add(animationPanel,c);
 		
 
 		//PH1
@@ -88,7 +91,17 @@ public class AnimationInterface extends JPanel {
 		c.weighty=1;
 		
 		c.gridy=4;
-		this.add(new SliderTexted(1,2400,100,4),c);
+		SliderTexted sDist =new SliderTexted(1,2400,100,4);
+		this.add(sDist,c);
+		
+		sDist.slider.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e) {
+            	animationPanel.setGap((int)sDist.getValue()*animationPanel.getHeight()/24/2);
+            	//System.out.println(Integer.toString((int)animationPanel.gap));
+            }
+        });
+		
 		c.gridy=6;
 		this.add(new SliderTexted(1,9000,1,4),c);
 		c.gridy=8;
