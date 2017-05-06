@@ -28,7 +28,7 @@ public class Droplet {
 		ay=2;
 		//default 
 		diam=2;
-		dist=32;
+		dist=32;//for calculations (in [m]) realdist=dist/(2*1000); aby zachowaæ skalê rysunku, nale¿a³oby tysi¹ckrotnie zwiêkszyæ odleg³oœc miêdzy ok³adkami kondensatora
 		volts=5081;
 	}
 	/*public static void main(String[] args) {
