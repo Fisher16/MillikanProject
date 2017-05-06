@@ -76,9 +76,9 @@ public class AnimationInterface extends JPanel {
 		c.weighty=1;
 
 		c.gridy=3;
-		this.add(new JLabel("Distance [10^-3 m]"),c);
+		this.add(new JLabel("Distance [mm]"),c);
 		c.gridy=5;
-		this.add(new JLabel("Voltage [kV]"),c);
+		this.add(new JLabel("Voltage [V]"),c);
 		c.gridy=7;
 		this.add(new JLabel("Simulation Speed"),c);
 		
@@ -91,7 +91,7 @@ public class AnimationInterface extends JPanel {
 		c.weighty=1;
 		
 		c.gridy=4;
-		SliderTexted sDist =new SliderTexted(1,2400,100,4);
+		SliderTexted sDist =new SliderTexted(1,24,1,4);
 		this.add(sDist,c);
 		
 		sDist.slider.addChangeListener(new ChangeListener(){
