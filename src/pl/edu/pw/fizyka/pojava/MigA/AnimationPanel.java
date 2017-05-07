@@ -1,7 +1,7 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
 import java.awt.*;
-import java.awt.event.*;
+//import java.awt.event.*;
 //import java.awt.geom.Line2D;
 import pl.edu.pw.fizyka.pojava.MigA.Droplet;
 import javax.swing.*;
@@ -19,7 +19,7 @@ public class AnimationPanel extends JPanel  {
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
 		//this.setGap(12*height/24/2);
-		System.out.println(Integer.toString((int)drop.x));
+		//System.out.println(Integer.toString((int)drop.x));
 	}
 	
 
