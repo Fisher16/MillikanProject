@@ -36,9 +36,9 @@ public class Chart extends JPanel{
 		 dataset.addSeries(series);
 		 // Generate the graph
 		 JFreeChart chart = ChartFactory.createXYLineChart(
-		 "wykres prêdkoœci od czasu", // Title
-		 "czas", // x-axis Label
-		 "prêdkoœæ", // y-axis Label
+		 "VelocityChart", // Title
+		 "time", // x-axis Label
+		 "velocity", // y-axis Label
 		 dataset, // Dataset
 		 PlotOrientation.VERTICAL, // Plot Orientation
 		 true, // Show Legend
