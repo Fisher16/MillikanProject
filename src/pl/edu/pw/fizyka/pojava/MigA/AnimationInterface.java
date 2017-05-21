@@ -185,7 +185,8 @@ public class AnimationInterface extends JPanel {
 		});
 		
 		
-		
+//TO DO
+		/*Mouse Listener for information placeholder*/
 		
 		
 		

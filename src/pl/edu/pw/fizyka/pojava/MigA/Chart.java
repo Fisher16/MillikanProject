@@ -153,6 +153,8 @@ public class Chart extends JPanel{
 			    }
 			});
 		 
+//TO DO
+			/*Save button all info x vx ay plus Calculated charge*/
 		 this.add(outPanel);
 		
 	}
