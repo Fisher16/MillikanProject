@@ -13,6 +13,7 @@ public class AnimationPanel extends JPanel  {
 	int gap=0;
 	public Droplet drop=new Droplet(this);
 	
+	
 	//in ms
 	int delay=1000;
 

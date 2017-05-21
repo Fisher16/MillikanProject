@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.jfree.data.xy.XYSeries;
+
 /**
  * Container for animation panel and interface. 
  * 
@@ -23,7 +25,13 @@ import java.awt.event.ActionListener;
 public class AnimationInterface extends JPanel {
 	private static final long serialVersionUID = 8614982757356423063L;
 	public double tempo=0.1;
+	public double tm=0;
+	XYSeries velData = new XYSeries("Velocity");
+	XYSeries accData = new XYSeries("Acceleration");
+	XYSeries posData = new XYSeries("Position");
 	
+	
+	DropCharge dC=new DropCharge();
 	public AnimationInterface(){
 		//visual initialization
 		this.setLayout(new GridBagLayout());
@@ -93,18 +101,18 @@ public class AnimationInterface extends JPanel {
 		c.weighty=1;
 		
 		c.gridy=4;
-		SliderTexted sDist =new SliderTexted(1,24,1,4);
+		SliderTexted sDist =new SliderTexted(1,48,1,4);
 		this.add(sDist,c);
 		
 		sDist.slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-            	animationPanel.setGap((int)sDist.getValue()*2);
+            	animationPanel.setGap((int)sDist.getValue());
             }
         });
 		
 		c.gridy=6;
-		SliderTexted sVol=new SliderTexted(1,9000,1,4);
+		SliderTexted sVol=new SliderTexted(1,1000,1,4);
 		this.add(sVol,c);
 		c.gridy=8;
 		SliderTexted sTime=new SliderTexted(1,1000,10,4);
@@ -115,6 +123,11 @@ public class AnimationInterface extends JPanel {
             	tempo=0.002*(sTime.getValue());
             }
         });
+		
+		//Chart Data
+		
+		velData.add(0,0);
+		
 		//Animation
 		
 		Timer timer = new Timer(10, new ActionListener() {
@@ -123,12 +136,23 @@ public class AnimationInterface extends JPanel {
 	            if(animationPanel.drop.y>-10&&animationPanel.drop.y<(animationPanel.getHeight()-60)){
 	            	animationPanel.drop.nextPos(tempo, animationPanel, sVol.slider);
 	            	animationPanel.repaint();
-	            }else animationPanel.drop.reset();
-	         
-//for testing
-	           // System.out.println(animationPanel.drop.charge);
-	          //  System.out.println(animationPanel.drop.ay);
-	            //System.out.println(tempo+"\n");
+	            }else {
+	            	animationPanel.drop.reset();
+	            	tm=0;
+	            	velData.clear();
+	            }
+	            tm+=10;
+	            if(tm%100==0){
+	            	velData.add(tm/1000,animationPanel.drop.vy);
+	            	accData.add(tm/1000,animationPanel.drop.ay);
+	            	posData.add(tm/1000,animationPanel.drop.y);
+	            	dC.calC=10*animationPanel.gap/sVol.getValue();
+	            }
+	            
+//for testing	
+	           // System.out.println(tm/1000+"\n"+velData.getItemCount());
+	           // System.out.println(animationPanel.drop.charge+"\n"+calC);
+	           // System.out.println(sVol.getValue()+"\n");
 	        
 
 	        }
@@ -155,6 +179,7 @@ public class AnimationInterface extends JPanel {
 		    	else {
 		    		timer.stop();
 		    		startButton.setText("ON");
+	//	    		System.out.println(dC.calC);
 		    	}
 		    }
 		});
