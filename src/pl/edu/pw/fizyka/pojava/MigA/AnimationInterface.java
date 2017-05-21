@@ -7,7 +7,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import pl.edu.pw.fizyka.pojava.MigA.*;
+//import pl.edu.pw.fizyka.pojava.MigA.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 
 public class AnimationInterface extends JPanel {
 	private static final long serialVersionUID = 8614982757356423063L;
+	public double tempo=0.1;
+	
 	public AnimationInterface(){
 		//visual initialization
 		this.setLayout(new GridBagLayout());
@@ -80,7 +82,7 @@ public class AnimationInterface extends JPanel {
 		c.gridy=5;
 		this.add(new JLabel("Voltage [V]"),c);
 		c.gridy=7;
-		this.add(new JLabel("Simulation Speed"),c);
+		this.add(new JLabel("Simulation Tempo [%]"),c);
 		
 		//Sliders & text
 		//to do variable slider length
@@ -105,18 +107,30 @@ public class AnimationInterface extends JPanel {
 		SliderTexted sVol=new SliderTexted(1,9000,1,4);
 		this.add(sVol,c);
 		c.gridy=8;
-		this.add(new SliderTexted(1,1000,10,4),c);
+		SliderTexted sTime=new SliderTexted(1,1000,10,4);
+		this.add(sTime,c);
+		sTime.slider.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e) {
+            	tempo=0.002*(sTime.getValue());
+            }
+        });
 		//Animation
 		
 		Timer timer = new Timer(10, new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            if(animationPanel.drop.y>-10&&animationPanel.drop.y<(animationPanel.getHeight()-60)){
-	            	animationPanel.drop.nextPos((double)0.1, animationPanel, sVol.slider);
+	            	animationPanel.drop.nextPos(tempo, animationPanel, sVol.slider);
 	            	animationPanel.repaint();
 	            }else animationPanel.drop.reset();
 	         
-	            System.out.println(animationPanel.drop.ay);
+//for testing
+	           // System.out.println(animationPanel.drop.charge);
+	          //  System.out.println(animationPanel.drop.ay);
+	            //System.out.println(tempo+"\n");
+	        
+
 	        }
 	    });
 		

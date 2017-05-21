@@ -1,4 +1,6 @@
 package pl.edu.pw.fizyka.pojava.MigA;
+import java.util.Random;
+
 import javax.swing.*;
 
 public class Droplet {
@@ -10,11 +12,20 @@ public class Droplet {
 	//capacitor - distance and voltage of plates 
 	public int dist;
 	public int volts;
+	//parameters
+	//charge
+	public double charge=((int)((new Random()).nextGaussian())+100)*0.16;
+	//mass
+	public double mass=1;
+	public int eN;
+	//g acceleration
+	double g=10;
 	
 	public Droplet() {
 		//start position
 		x=230;
 		y=80;
+		ay=g;
 		//default 
 		diam=5;
 		dist=32;
@@ -25,18 +36,18 @@ public class Droplet {
 		x=(int)Panel.getWidth()/2;
 		y=5;
 		vy=0;
-		ay=2;
+		ay=g;
 		//default 
 		diam=2;
-		dist=32;//for calculations (in [m]) realdist=dist/(2*1000); aby zachowaæ skalê rysunku, nale¿a³oby tysi¹ckrotnie zwiêkszyæ odleg³oœc miêdzy ok³adkami kondensatora
+		dist=32;//for calculations (in [m]) realdist=dist/(2*1000); aby zachowaï¿½ skalï¿½ rysunku, naleï¿½aï¿½oby tysiï¿½ckrotnie zwiï¿½kszyï¿½ odlegï¿½oï¿½c miï¿½dzy okï¿½adkami kondensatora
 		volts=5081;
 	}
 	/*public static void main(String[] args) {
 		
 	}*/
 	public void nextPos(double dt,AnimationPanel Panel, JSlider Voltage){
-		if(y>(Panel.getHeight()-Panel.gap-60))ay=2-(double)Voltage.getValue()/1000;
-		else ay=2;
+		if(y>(Panel.getHeight()-Panel.gap-60))ay=g-(((double)Voltage.getValue())/Panel.gap*charge);
+		else ay=g;
 		vy+=ay*dt;
 		y+=vy*dt+ay*dt*dt/2;
 	}
@@ -46,7 +57,8 @@ public class Droplet {
 	public void reset(){
 		y=5;
 		vy=0;
-		ay=2;
+		ay=g;
+		charge=((int)((new Random()).nextGaussian())+10)*0.16;
 	}
 	
 }

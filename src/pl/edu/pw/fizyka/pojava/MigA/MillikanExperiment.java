@@ -20,15 +20,16 @@ public class MillikanExperiment extends JFrame {
 		JTabbedPane tPane = new JTabbedPane();
 		
 		tPane.addTab("Eksperyment",new AnimationInterface());
-		tPane.addTab("Wykres", new JPanel());
+		tPane.addTab("Wykres", new Chart());
         this.add(tPane);
+        
 		
 	}
 	
 	public static void main(String[] args) {
 		MillikanExperiment window=new MillikanExperiment();
 		window.setVisible(true);
-
+		
 	}
 
 }

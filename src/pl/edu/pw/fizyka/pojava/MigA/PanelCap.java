@@ -4,9 +4,14 @@ import java.awt.*;
 
 
 import javax.swing.JPanel;
-
+/**
+ * Container made for testing 
+ * 
+ * @author MK
+ *
+ */
 public class PanelCap extends JPanel {
-
+	private static final long serialVersionUID = 8614982757356423063L;
 	public PanelCap() {
 		this.setBackground(Color.GRAY);
 		this.setVisible(true);
