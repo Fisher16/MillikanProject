@@ -7,7 +7,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-//import pl.edu.pw.fizyka.pojava.MigA.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,7 +20,7 @@ import org.jfree.data.xy.XYSeries;
 /**
  * Container for animation panel and interface. 
  * 
- * @author MK
+ * @author MK AR
  *
  */
 
@@ -105,8 +104,9 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		c.gridy=5;
 		this.add(new JLabel("Voltage [V]"),c);
 		c.gridy=7;
-		this.add(new JLabel("Simulation Tempo [%]"),c);
-				//Sliders & text
+		this.add(new JLabel("Simulation Tempo (dt) [ms]"),c);
+		
+		//Sliders & text
 		//to do variable slider length
 		c.gridx=3;
 		c.gridwidth=1;
@@ -126,7 +126,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
         });
 		
 		c.gridy=6;
-		SliderTexted sVol=new SliderTexted(1,1000,1,4);
+		SliderTexted sVol=new SliderTexted(1,9000,1,4);
 		this.add(sVol,c);
 		c.gridy=8;
 		SliderTexted sTime=new SliderTexted(1,1000,10,4);
@@ -134,27 +134,29 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		sTime.slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-            	tempo=0.002*(sTime.getValue());
+            	tempo=0.001*(sTime.getValue());
             }
         });
 		
 		//Chart Data
 		
-		velData.add(0,0);
 		
 		//Animation
 		
 		Timer timer = new Timer(10, new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
-	            if(animationPanel.drop.y>-10&&animationPanel.drop.y<(animationPanel.getHeight()-60)){
+	        	animationPanel.repaint();
+	            //if(animationPanel.drop.y>-10&&(animationPanel.drop.y*animationPanel.scl)<(animationPanel.getHeight()-60)){
 	            	animationPanel.drop.nextPos(tempo, animationPanel, sVol.slider);
 	            	animationPanel.repaint();
-	            }else {
+	           /* }else {
 	            	animationPanel.drop.reset();
 	            	tm=0;
 	            	velData.clear();
-	            }
+	            	accData.clear();
+	            	posData.clear();
+	            }*/
 	            tm+=10;
 	            if(tm%100==0){
 	            	velData.add(tm/1000,animationPanel.drop.vy);
@@ -165,8 +167,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 	            
 //for testing	
 	           // System.out.println(tm/1000+"\n"+velData.getItemCount());
-	           // System.out.println(animationPanel.drop.charge+"\n"+calC);
-	           // System.out.println(sVol.getValue()+"\n");
+	           //System.out.println(animationPanel.drop.ay+"\n");
 	        
 
 	        }

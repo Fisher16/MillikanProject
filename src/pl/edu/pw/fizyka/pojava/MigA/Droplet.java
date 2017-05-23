@@ -3,56 +3,62 @@ import java.util.Random;
 
 import javax.swing.*;
 
+
 public class Droplet {
 	//position, diameter
-	public int x,y;
+	//everything in meters
+	public double x,y;
 	public double vy;
 	public double ay;
-	public int diam;
-	//capacitor - distance and voltage of plates 
-	public int dist;
-	public int volts;
+	public double diam;
+	
 	//parameters
 	//charge
-	public double charge=((int)((new Random()).nextInt(100)))*0.016;
+	double e=1.60217*Math.pow(10,-19);
+	public double charge=((int)((new Random()).nextInt(1000)))*e;
 	//mass
-	public double mass=1;
-	public int eN;
+	double m;
+	
 	//g acceleration
 	double g=10;
 	double coeff;
+	//buoyancy force
+	double bF;
 	
+	/*
 	public Droplet() {
-		//start position
-		x=230;
-		y=80;
-		ay=g;
-		//default 
-		diam=5;
-		dist=32;
-		volts=5081;
+
+
 	}
+	*/
+
 	public Droplet(AnimationPanel Panel) {
 		//start position
-		x=(int)Panel.getWidth()/2;
+		x=Panel.getWidth()/2;
 		y=0;
 		vy=0;
-		ay=g;
-		diam=10;
-		coeff=6*3.1416*diam*0.5*0.005;
-		//default 
-	
-		dist=32;//for calculations (in [m]) realdist=dist/(2*1000); aby zachowa� skal� rysunku, nale�a�oby tysi�ckrotnie zwi�kszy� odleg�o�c mi�dzy ok�adkami kondensatora
-		volts=5081;
-	}
-	/*public static void main(String[] args) {
 		
-	}*/
+		//Start parameters in meters
+		diam=Math.pow(10, -6);
+		double r=diam/2;
+		double vol=4/3*3.1416*r*r*r;
+		m=vol*920;
+		bF=vol*1.2*g;
+		ay=g-bF/m;
+		coeff=6*3.1416*r*17*Math.pow(10, -6);
+	}
+	
+	public void print(){
+		System.out.println(m+ay+vy+y);
+	}
+
+
 	public void nextPos(double dt,AnimationPanel Panel, JSlider Voltage){
-		if(y>(Panel.getHeight()-Panel.gap-60))ay=g-(((double)Voltage.getValue())/Panel.gap*charge)-vy*coeff;
-		else ay=g-vy*coeff;
+		if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))ay=g-(((double)Voltage.getValue())/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
+		else ay=g-bF/m-vy*coeff/m;
 		vy+=ay*dt;
 		y+=vy*dt+ay*dt*dt/2;
+		this.print();
 	}
 	public void setx(int X){
 		x=X;
@@ -61,7 +67,7 @@ public class Droplet {
 		y=0;
 		vy=0;
 		ay=g;
-		charge=((int)((new Random()).nextInt(100)))*0.016;
+		charge=((int)((new Random()).nextInt(1000)))*e;
 	}
 	
 }

@@ -1,21 +1,26 @@
 package pl.edu.pw.fizyka.pojava.MigA;
-import java.awt.BorderLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-//import java.lang.*;
 import org.jfree.chart.*;
-import org.jfree.chart.ChartUtilities;
+
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.ChartFactory;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import java.io.File;
-import pl.edu.pw.fizyka.pojava.MigA.AnimationInterface;
+
+
+/**
+ * Panel for charts and data handling. 
+ * 
+ * @author AR MK
+ *
+ */
+
 public class Chart extends JPanel{
 
 	/**

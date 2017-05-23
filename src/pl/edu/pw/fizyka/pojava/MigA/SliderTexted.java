@@ -6,9 +6,7 @@ import javax.swing.event.*;
 import java.awt.*;
 
 /**
- * Container for slider and text. 
- * 
- * Maybe spinners.
+ * Container for slider and text.
  * 
  * @author MK
  *
@@ -41,7 +39,6 @@ public class SliderTexted extends JPanel {
 	
 
 	public SliderTexted(int Min,int Max,int Div,int TextSize){
-		//this.setLayout(new FlowLayout());
 		min=Min;
 		max=Max;
 		div=Div;

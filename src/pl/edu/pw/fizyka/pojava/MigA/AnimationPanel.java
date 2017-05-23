@@ -1,49 +1,42 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
 import java.awt.*;
-//import java.awt.event.*;
-//import java.awt.geom.Line2D;
 import pl.edu.pw.fizyka.pojava.MigA.Droplet;
 import javax.swing.*;
 
+/**
+ * Animation panel, graphic visualization functions. 
+ * 
+ * @author MK
+ *
+ */
+
+
 public class AnimationPanel extends JPanel  {
 	private static final long serialVersionUID = 3960445104787308557L;
-	int width=this.getWidth();
-	int height=this.getHeight();
-	int gap=0;
+	int gap=24;
 	public Droplet drop=new Droplet(this);
-	
-	
-	//in ms
-	int delay=1000;
-	
-	
+	//true Y scale real always 25mm
+	public double scl;
+
 
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
-		//this.setGap(12*height/24/2);
-		//System.out.println(Integer.toString((int)drop.x));
 	}
 	
 
 	@Override
 	public void paintComponent(Graphics g) {
-	
+		scl=(double)this.getHeight()/0.025;
+		System.out.println(scl);
 		//droplet
         Graphics2D graph = (Graphics2D)g;
         graph.clearRect(0, 0, getWidth(), getHeight());            
         graph.setColor(Color.blue);
         drop.setx(this.getWidth()/2);
-        graph.fillOval(drop.x, drop.y, 10,10);     
+        graph.fillOval((int)(drop.x), (int)(drop.y*scl), 10,10);
         
-        /*// capacitor
-		
-	    Line2D lin = new Line2D.Float(180, 400, 300, 400);
-	    Line2D lin2 = new Line2D.Float(180, 400-Droplet.dist, 300, 400-Droplet.dist);
-	    graph.draw(lin);
-	    graph.draw(lin2);*/
-        
-	    //cap
+	    //capacitor
 	    g.setColor(Color.BLACK);
 		int w=200;
         g.fillRect((this.getWidth()-w)/2,this.getHeight()-50, w,20);
@@ -57,54 +50,6 @@ public class AnimationPanel extends JPanel  {
 		gap=Gap;
 		this.repaint();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	ActionListener taskPerformer = new ActionListener() {
-	      public void actionPerformed(ActionEvent evt) {
-	    	//fall stop in capacitor 
-	        	if(y>=halfcap && Droplet.volts == 5081){
-	        		stop();
-		        
-		        	}
-		        	
-	            //touching the ground
-	        	else if(y + Droplet.diam+10 > getHeight() || y < 0){
-	        		stop();
-	        	}
-	        	else{
-	        		repaint();
-	        	}
-	      }
-	  };
-	  new Timer(delay, taskPerformer).start();
-
-/*	private void print(Graphics2D g) {
-		//drawing
-	    g.fillOval((int) dropx, (int) dropy, 2,2);
-	}*/
-	
-	/*public void iterate(double dt){
-	    List<Ball> balls = ballContainer.getBalls();
-	    for (int ii=0;ii<balls.size(); ii++){
-	        Ball b1 = balls.get(ii);
-	        checkCollisions(ballContainer, b1, ii);
-	        b1.iteration(dt);
-	    }
-	}*/
-	
 	
 
 	
