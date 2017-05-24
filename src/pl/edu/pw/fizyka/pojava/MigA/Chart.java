@@ -143,8 +143,8 @@ public class Chart extends JPanel{
 	//Text
 		 JPanel outPanel=new JPanel();
 		 outPanel.setLayout(new java.awt.GridLayout(2,2));
-		 outPanel.add(new JLabel("Calculated Charge: "));
-		 JTextField calCharge=new JTextField(Double.toString(dC.calC));
+		 outPanel.add(new JLabel("Calculated Charge [e]: "));
+		 JTextField calCharge=new JTextField(Double.toString(dC.ratio()));
 		 outPanel.add(calCharge);
 		
 		 
@@ -154,7 +154,6 @@ public class Chart extends JPanel{
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
 			    	calCharge.setText(Double.toString(dC.ratio()));
-	//		    	System.out.println(dC.calC);
 			    }
 			});
 		 

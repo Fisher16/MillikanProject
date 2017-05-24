@@ -51,9 +51,9 @@ public class SliderTexted extends JPanel {
                 text.setText(String.valueOf((double)slider.getValue()/div));
             }
         });
-        
-        this.add(slider);
-        this.add(text);
+        this.setLayout(new BorderLayout());
+        this.add(slider,BorderLayout.CENTER);
+        this.add(text,BorderLayout.EAST);
 	}
 	public SliderTexted(int Min,int Max,String s){
 		min=Min;

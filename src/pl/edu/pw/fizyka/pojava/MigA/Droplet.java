@@ -20,6 +20,7 @@ public class Droplet {
 	
 	//g acceleration
 	double g=10;
+	//air resistance
 	double coeff;
 	//buoyancy force
 	double bF;
@@ -41,14 +42,9 @@ public class Droplet {
 		coeff=6*3.1416*r*17*Math.pow(10, -6);
 	}
 	
-	public void print(){
-		System.out.println(charge/e);
-	}
-
 
 	public void nextPos(double dt,AnimationPanel Panel, SliderTexted Voltage){
-		//System.out.println((Voltage.getValue()/(Panel.gap/Panel.scl)*charge));
-		this.print();
+		System.out.println(coeff);
 		int n=100000;
 		for(int i=0;i<n;++i){
 			if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))ay=g-(Voltage.getValue()/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
@@ -60,8 +56,11 @@ public class Droplet {
 	public void setx(int X){
 		x=X;
 	}
+	public void setCoeff(double viscosity){
+		coeff=6*3.1416*diam*0.5*viscosity*Math.pow(10, -6);
+	}
 	public void reset(){
-		y=0;
+		y=0.001;
 		vy=0;
 		ay=g;
 		charge=((new Random()).nextInt(4)+1)*e;

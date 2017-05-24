@@ -76,6 +76,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		
 	    JPanel ph2 = new JPanel();
 	    ph2.setBorder(tBdescr);
+	    ph2.setMinimumSize(new Dimension(248,88));
 	    JTextArea phField2=new JTextArea(4,16);
 	    phField2.setLineWrap(true);
 	    phField2.setWrapStyleWord(true);
@@ -87,18 +88,19 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 	    ph2.add(scroll,BorderLayout.CENTER); 
 	    
 	    c.gridx=3;c.gridy=0;
-		c.gridwidth=1;c.gridheight=3;
-		c.weightx = 1;c.weighty=3;
+		c.gridwidth=2;c.gridheight=1;
+		c.weightx = 2;c.weighty=3;
 		this.add(ph2,c);
 		
 		
 		//Labels		
 		c.gridx=3;
-		c.gridwidth=1;
+		c.gridwidth=2;
 		c.gridheight=1;
-		c.weightx = 1;
+		c.weightx = 2;
 		c.weighty=1;
-
+		c.gridy=1;
+		this.add(new JLabel("Viscosity [μPa·s]"),c);
 		c.gridy=3;
 		this.add(new JLabel("Distance [10^-4m]"),c);
 		c.gridy=5;
@@ -109,11 +111,25 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		//Sliders & text
 		//to do variable slider length
 		c.gridx=3;
-		c.gridwidth=1;
+		c.gridwidth=2;
 		c.gridheight=1;
-		c.weightx = 1;
+		c.weightx = 2;
 		c.weighty=1;
 		
+		//Viscosity
+		c.gridy=2;
+		SliderTexted sVis =new SliderTexted(0,2000,100,4);
+		sVis.slider.setValue(1700);
+		this.add(sVis,c);
+		
+		sVis.slider.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e) {
+            	animationPanel.drop.setCoeff((double)sVis.getValue());
+            }
+        });
+		
+		//Capacitor gap
 		c.gridy=4;
 		SliderTexted sDist =new SliderTexted(1,100,1,4);
 		this.add(sDist,c);
@@ -125,9 +141,12 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
             }
         });
 		
+		//Voltage
 		c.gridy=6;
 		SliderTexted sVol=new SliderTexted(1,1000,100,4);
 		this.add(sVol,c);
+		
+		//Timer setup
 		c.gridy=8;
 		SliderTexted sTime=new SliderTexted(1,1000,10,4);
 		this.add(sTime,c);
@@ -157,23 +176,20 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 	            	accData.clear();
 	            	posData.clear();
 	            }
+	            
 	            tm+=10;
-	            if(tm%100==0){
+	            if(tm%10==0){
 	            	velData.add(tm/1000,animationPanel.drop.vy);
 	            	accData.add(tm/1000,animationPanel.drop.ay);
 	            	posData.add(tm/1000,animationPanel.drop.y);
-	            	dC.calC=(animationPanel.drop.m*animationPanel.drop.g-animationPanel.drop.bF)*(animationPanel.gap/animationPanel.scl)/sVol.getValue();
+	            	dC.calC=(animationPanel.drop.m*animationPanel.drop.g-animationPanel.drop.bF)*
+	            			(animationPanel.gap/animationPanel.scl)/sVol.getValue();
 	            }
-	            
-//for testing	
-	           // System.out.println(tm/1000+"\n"+velData.getItemCount());
-	           //System.out.println(animationPanel.drop.ay+"\n");
-	        
 
 	        }
 	    });
+		//Buttons
 		
-		//On/Off button
 		c.gridx=3;
 		c.gridwidth=1;
 		c.gridheight=1;
@@ -182,8 +198,12 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		c.fill = GridBagConstraints.BOTH;
 		
 		c.gridy=9;
+		JPanel buttonPanel=new JPanel();
+		buttonPanel.setLayout(new BorderLayout());
+		
+		//On/Off button
 		JButton startButton = new JButton("ON");
-		this.add(startButton,c);
+		
 		startButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -194,12 +214,25 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		    	else {
 		    		timer.stop();
 		    		startButton.setText("ON");
-	//	    		System.out.println(dC.calC);
 		    	}
 		    }
 		});
+		buttonPanel.add(startButton,BorderLayout.CENTER);
+		//Reset button
+		JButton resetButton = new JButton("RESET");
 		
-		
+		resetButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	animationPanel.drop.reset();
+		    	tm=0;
+            	velData.clear();
+            	accData.clear();
+            	posData.clear();
+		    }
+		});
+		buttonPanel.add(resetButton,BorderLayout.WEST);
+		this.add(buttonPanel,c);
 //TO DO
 		/*Mouse Listener for information placeholder*/
 		//add mouse listener to capacitor&drop separately
