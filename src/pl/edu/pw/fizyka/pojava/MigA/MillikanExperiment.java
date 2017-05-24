@@ -19,8 +19,8 @@ public class MillikanExperiment extends JFrame {
 		
 		JTabbedPane tPane = new JTabbedPane();
 		AnimationInterface exp=new AnimationInterface();
-		tPane.addTab("Eksperyment",exp);
-		tPane.addTab("Wykres", new Chart(exp.velData,exp.accData,exp.posData,exp.dC));
+		tPane.addTab("Experiment",exp);
+		tPane.addTab("Charts", new Chart(exp.velData,exp.accData,exp.posData,exp.dC));
         this.add(tPane);
         
 		

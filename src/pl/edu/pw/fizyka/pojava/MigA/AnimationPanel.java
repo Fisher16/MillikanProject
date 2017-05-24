@@ -16,6 +16,8 @@ public class AnimationPanel extends JPanel  {
 	
 	//in ms
 	int delay=1000;
+	
+	
 
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
@@ -25,7 +27,7 @@ public class AnimationPanel extends JPanel  {
 	
 
 	@Override
-	protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 	
 		//droplet
         Graphics2D graph = (Graphics2D)g;
@@ -33,8 +35,9 @@ public class AnimationPanel extends JPanel  {
         graph.setColor(Color.blue);
         drop.setx(this.getWidth()/2);
         graph.fillOval(drop.x, drop.y, 10,10);     
+        
         /*// capacitor
-	
+		
 	    Line2D lin = new Line2D.Float(180, 400, 300, 400);
 	    Line2D lin2 = new Line2D.Float(180, 400-Droplet.dist, 300, 400-Droplet.dist);
 	    graph.draw(lin);

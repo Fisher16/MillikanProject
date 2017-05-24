@@ -12,6 +12,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import org.jfree.data.xy.XYSeries;
 
@@ -22,7 +25,7 @@ import org.jfree.data.xy.XYSeries;
  *
  */
 
-public class AnimationInterface extends JPanel {
+public class AnimationInterface extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 8614982757356423063L;
 	public double tempo=0.1;
 	public double tm=0;
@@ -37,7 +40,8 @@ public class AnimationInterface extends JPanel {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c =new GridBagConstraints();
 		Border lowerEtched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-	    TitledBorder tB = BorderFactory.createTitledBorder(lowerEtched, "Place Holder");
+	    TitledBorder tBdescr = BorderFactory.createTitledBorder(lowerEtched, "Description");
+	    TitledBorder tB = BorderFactory.createTitledBorder(lowerEtched, "Results ");
 	    c.fill = GridBagConstraints.BOTH;
 	    
 	    
@@ -53,10 +57,15 @@ public class AnimationInterface extends JPanel {
 		//PH1
 	    JPanel ph = new JPanel();
 	    ph.setBorder(tB);
-	    JFormattedTextField phField=new JFormattedTextField();
-	    phField.setText("Place Holder");
+	    JTextArea phField=new JTextArea();
+	    phField.setLineWrap(true);
+	    phField.setWrapStyleWord(true);
+	    ph.setLayout(new BorderLayout());
+	    phField.setBackground(null);
+	    phField.setText("Calculated charge:");
 	    phField.setEditable(false);
 	    ph.add(phField);
+	    
 	    
 	    c.gridx=0;c.gridy=7;
 		c.gridwidth=3;c.gridheight=3;
@@ -64,13 +73,19 @@ public class AnimationInterface extends JPanel {
 		this.add(ph,c);
 		
 		
-		//PH2
+		//PH2 
+		
 	    JPanel ph2 = new JPanel();
-	    ph2.setBorder(tB);
-	    JFormattedTextField phField2=new JFormattedTextField();
-	    phField2.setText("Place Holder");
+	    ph2.setBorder(tBdescr);
+	    JTextArea phField2=new JTextArea(4,16);
+	    phField2.setLineWrap(true);
+	    phField2.setWrapStyleWord(true);
 	    phField2.setEditable(false);
-	    ph2.add(phField2);
+	    phField2.setBackground(null);
+	    ph2.setLayout(new BorderLayout());
+	    JScrollPane scroll = new JScrollPane(phField2);
+	    scroll.setBorder(null);
+	    ph2.add(scroll,BorderLayout.CENTER); 
 	    
 	    c.gridx=3;c.gridy=0;
 		c.gridwidth=1;c.gridheight=3;
@@ -91,8 +106,7 @@ public class AnimationInterface extends JPanel {
 		this.add(new JLabel("Voltage [V]"),c);
 		c.gridy=7;
 		this.add(new JLabel("Simulation Tempo [%]"),c);
-		
-		//Sliders & text
+				//Sliders & text
 		//to do variable slider length
 		c.gridx=3;
 		c.gridwidth=1;
@@ -187,19 +201,92 @@ public class AnimationInterface extends JPanel {
 		
 //TO DO
 		/*Mouse Listener for information placeholder*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		//add mouse listener to capacitor&drop separately
+		  this.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseReleased(MouseEvent e) { }
+
+            @Override
+            public void mousePressed(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+        	    phField2.setText("The Millikan oil drop experiment investigates the charge on a single droplet of oil.");
+        	    
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	//capacitor description
+            	phField2.setText("Ionized droplet falls into the capacitor - due to electric field, there occurs additional force. Adjust the voltage, so that the droplet will remain steady. ");
+            	
+        	    //droplet description 
+        	    //phField2.setText("Three forces act upon a falling droplet - gravitation, a buoyant force (Archimedes' principle), and a drag force (Stoke's law). Measuring the terminal velocity in the air allows to calculate the radius and the mass of droplet. ");
+        	   
+        	    //source of radiation
+        	    //phField2.setText("Ionising radiation provides droplet with charge.");
+            	
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+        });
 		
 		
 	}
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+	/*	if (animationPanel.g.contains(e.getX(), e.getY()) ) {
+            //mouse is inside the capacitor
+
+        	phField2.setText("Ionized droplet falls into the capacitor - due to electric field, there occurs additional force. Adjust the voltage, so that the droplet will remain steady. ");
+        	
+			
+        } else if(animationPanel.graph.contains(e.getX(), e.getY())){
+        	//mouse inside the drop
+
+    	    phField2.setText("Three forces act upon a falling droplet - gravitation, a buoyant force (Archimedes' principle), and a drag force (Stoke's law). Measuring the terminal velocity in the air allows to calculate the radius and the mass of droplet. ");
+    	   
+        } else {
+            //mouse is outside
+        	phField2.setText("The Millikan oil drop experiment investigates the charge on a single droplet of oil.");
+     	    
+        }*/
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+
 
 }
 
