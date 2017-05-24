@@ -153,7 +153,7 @@ public class Chart extends JPanel{
 			calcButton.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
-			    	calCharge.setText(Double.toString(dC.calC));
+			    	calCharge.setText(Double.toString(dC.ratio()));
 	//		    	System.out.println(dC.calC);
 			    }
 			});

@@ -1,7 +1,6 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 import java.util.Random;
 
-import javax.swing.*;
 
 
 public class Droplet {
@@ -15,7 +14,7 @@ public class Droplet {
 	//parameters
 	//charge
 	double e=1.60217*Math.pow(10,-19);
-	public double charge=((int)((new Random()).nextInt(1000)))*e;
+	public double charge=((new Random()).nextInt(4)+1)*e;
 	//mass
 	double m;
 	
@@ -25,17 +24,11 @@ public class Droplet {
 	//buoyancy force
 	double bF;
 	
-	/*
-	public Droplet() {
-
-
-	}
-	*/
 
 	public Droplet(AnimationPanel Panel) {
 		//start position
 		x=Panel.getWidth()/2;
-		y=0;
+		y=0.001;
 		vy=0;
 		
 		//Start parameters in meters
@@ -44,21 +37,25 @@ public class Droplet {
 		double vol=4/3*3.1416*r*r*r;
 		m=vol*920;
 		bF=vol*1.2*g;
-		ay=g-bF/m;
+		ay=g;
 		coeff=6*3.1416*r*17*Math.pow(10, -6);
 	}
 	
 	public void print(){
-		System.out.println(m+ay+vy+y);
+		System.out.println(charge/e);
 	}
 
 
-	public void nextPos(double dt,AnimationPanel Panel, JSlider Voltage){
-		if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))ay=g-(((double)Voltage.getValue())/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
-		else ay=g-bF/m-vy*coeff/m;
-		vy+=ay*dt;
-		y+=vy*dt+ay*dt*dt/2;
+	public void nextPos(double dt,AnimationPanel Panel, SliderTexted Voltage){
+		//System.out.println((Voltage.getValue()/(Panel.gap/Panel.scl)*charge));
 		this.print();
+		int n=100000;
+		for(int i=0;i<n;++i){
+			if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))ay=g-(Voltage.getValue()/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
+			else ay=g-bF/m-vy*coeff/m;
+		vy+=ay*dt/n;
+		y+=vy*dt/n;
+		}
 	}
 	public void setx(int X){
 		x=X;
@@ -67,7 +64,7 @@ public class Droplet {
 		y=0;
 		vy=0;
 		ay=g;
-		charge=((int)((new Random()).nextInt(1000)))*e;
+		charge=((new Random()).nextInt(4)+1)*e;
 	}
 	
 }

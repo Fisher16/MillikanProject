@@ -16,7 +16,7 @@ public class AnimationPanel extends JPanel  {
 	private static final long serialVersionUID = 3960445104787308557L;
 	int gap=24;
 	public Droplet drop=new Droplet(this);
-	//true Y scale real always 25mm
+	//true Y scale real always 2.5mm
 	public double scl;
 
 
@@ -27,8 +27,8 @@ public class AnimationPanel extends JPanel  {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		scl=(double)this.getHeight()/0.025;
-		System.out.println(scl);
+		scl=(double)this.getHeight()/0.0025;
+	//	System.out.println(drop.y*scl);
 		//droplet
         Graphics2D graph = (Graphics2D)g;
         graph.clearRect(0, 0, getWidth(), getHeight());            

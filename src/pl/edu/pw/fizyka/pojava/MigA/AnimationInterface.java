@@ -100,7 +100,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		c.weighty=1;
 
 		c.gridy=3;
-		this.add(new JLabel("Distance [mm]"),c);
+		this.add(new JLabel("Distance [10^-4m]"),c);
 		c.gridy=5;
 		this.add(new JLabel("Voltage [V]"),c);
 		c.gridy=7;
@@ -115,7 +115,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		c.weighty=1;
 		
 		c.gridy=4;
-		SliderTexted sDist =new SliderTexted(1,48,1,4);
+		SliderTexted sDist =new SliderTexted(1,100,1,4);
 		this.add(sDist,c);
 		
 		sDist.slider.addChangeListener(new ChangeListener(){
@@ -126,7 +126,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
         });
 		
 		c.gridy=6;
-		SliderTexted sVol=new SliderTexted(1,9000,1,4);
+		SliderTexted sVol=new SliderTexted(1,1000,100,4);
 		this.add(sVol,c);
 		c.gridy=8;
 		SliderTexted sTime=new SliderTexted(1,1000,10,4);
@@ -147,22 +147,22 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	        	animationPanel.repaint();
-	            //if(animationPanel.drop.y>-10&&(animationPanel.drop.y*animationPanel.scl)<(animationPanel.getHeight()-60)){
-	            	animationPanel.drop.nextPos(tempo, animationPanel, sVol.slider);
+	            if(animationPanel.drop.y>-10&&(animationPanel.drop.y*animationPanel.scl)<(animationPanel.getHeight()-60)){
+	            	animationPanel.drop.nextPos(tempo, animationPanel, sVol);
 	            	animationPanel.repaint();
-	           /* }else {
+	            }else {
 	            	animationPanel.drop.reset();
 	            	tm=0;
 	            	velData.clear();
 	            	accData.clear();
 	            	posData.clear();
-	            }*/
+	            }
 	            tm+=10;
 	            if(tm%100==0){
 	            	velData.add(tm/1000,animationPanel.drop.vy);
 	            	accData.add(tm/1000,animationPanel.drop.ay);
 	            	posData.add(tm/1000,animationPanel.drop.y);
-	            	dC.calC=10*animationPanel.gap/sVol.getValue();
+	            	dC.calC=(animationPanel.drop.m*animationPanel.drop.g-animationPanel.drop.bF)*(animationPanel.gap/animationPanel.scl)/sVol.getValue();
 	            }
 	            
 //for testing	
