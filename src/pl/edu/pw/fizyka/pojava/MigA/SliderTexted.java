@@ -18,6 +18,7 @@ public class SliderTexted extends JPanel {
 	int div;
 	public JTextField text;
 	public JSlider slider;
+	
 	public SliderTexted(){
 		this.setLayout(new FlowLayout());
 		max=1000;
@@ -55,6 +56,8 @@ public class SliderTexted extends JPanel {
         this.add(slider,BorderLayout.CENTER);
         this.add(text,BorderLayout.EAST);
 	}
+
+	
 	public SliderTexted(int Min,int Max,String s){
 		min=Min;
 		max=Max;
@@ -70,6 +73,8 @@ public class SliderTexted extends JPanel {
         this.add(slider);
         this.add(text);
 	}
+	
+	
 	public double getValue(){
 		return (double)slider.getValue()/div;
 	}

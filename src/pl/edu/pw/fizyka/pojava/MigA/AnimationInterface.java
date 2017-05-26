@@ -26,7 +26,7 @@ import org.jfree.data.xy.XYSeries;
 
 public class AnimationInterface extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = 8614982757356423063L;
-	public double tempo=0.1;
+	public double tempo=0.1/2;
 	public double tm=0;
 	XYSeries velData = new XYSeries("Velocity");
 	XYSeries accData = new XYSeries("Acceleration");
@@ -106,7 +106,7 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		c.gridy=5;
 		this.add(new JLabel("Voltage [V]"),c);
 		c.gridy=7;
-		this.add(new JLabel("Simulation Tempo (dt) [ms]"),c);
+		this.add(new JLabel("Simulation Tempo [%]"),c);
 		
 		//Sliders & text
 		//to do variable slider length
@@ -157,17 +157,15 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
             }
         });
 		
-		//Chart Data
 		
-		
-		//Animation
+	//Animation
 		
 		Timer timer = new Timer(10, new ActionListener() {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	        	animationPanel.repaint();
 	            if(animationPanel.drop.y>-10&&(animationPanel.drop.y*animationPanel.scl)<(animationPanel.getHeight()-60)){
-	            	animationPanel.drop.nextPos(tempo, animationPanel, sVol);
+	            	animationPanel.drop.nextPosPre(tempo, animationPanel, sVol);
 	            	animationPanel.repaint();
 	            }else {
 	            	animationPanel.drop.reset();
@@ -178,18 +176,20 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 	            }
 	            
 	            tm+=10;
-	            if(tm%10==0){
+	            if(tm%50==0){
 	            	velData.add(tm/1000,animationPanel.drop.vy);
 	            	accData.add(tm/1000,animationPanel.drop.ay);
 	            	posData.add(tm/1000,animationPanel.drop.y);
 	            	dC.calC=(animationPanel.drop.m*animationPanel.drop.g-animationPanel.drop.bF)*
 	            			(animationPanel.gap/animationPanel.scl)/sVol.getValue();
 	            }
+	            if(sVis.getValue()==0){sTime.slider.setValue(1);sTime.slider.setEnabled(false);}
+	            else sTime.slider.setEnabled(true);
 
 	        }
 	    });
-		//Buttons
 		
+		//Buttons
 		c.gridx=3;
 		c.gridwidth=1;
 		c.gridheight=1;
@@ -203,7 +203,6 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		
 		//On/Off button
 		JButton startButton = new JButton("ON");
-		
 		startButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -218,9 +217,9 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		    }
 		});
 		buttonPanel.add(startButton,BorderLayout.CENTER);
+		
 		//Reset button
 		JButton resetButton = new JButton("RESET");
-		
 		resetButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -232,7 +231,12 @@ public class AnimationInterface extends JPanel implements MouseListener, MouseMo
 		    }
 		});
 		buttonPanel.add(resetButton,BorderLayout.WEST);
+		
 		this.add(buttonPanel,c);
+		
+		
+		
+		
 //TO DO
 		/*Mouse Listener for information placeholder*/
 		//add mouse listener to capacitor&drop separately

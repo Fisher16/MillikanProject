@@ -28,7 +28,6 @@ public class AnimationPanel extends JPanel  {
 	@Override
 	public void paintComponent(Graphics g) {
 		scl=(double)this.getHeight()/0.0025;
-	//	System.out.println(drop.y*scl);
 		//droplet
         Graphics2D graph = (Graphics2D)g;
         graph.clearRect(0, 0, getWidth(), getHeight());            
