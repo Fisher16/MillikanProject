@@ -1,67 +1,100 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 import java.util.Random;
 
-import javax.swing.*;
+
 
 public class Droplet {
 	//position, diameter
-	public int x,y;
+	//everything in meters
+	public double x,y;
 	public double vy;
 	public double ay;
-	public int diam;
-	//capacitor - distance and voltage of plates 
-	public int dist;
-	public int volts;
+	public double diam;
+	
 	//parameters
 	//charge
-	public double charge=((int)((new Random()).nextInt(100)))*0.016;
+	double e=1.60217*Math.pow(10,-19);
+	public double charge=((new Random()).nextInt(4)+1)*e;
 	//mass
-	public double mass=1;
-	public int eN;
+	double m;
+	
 	//g acceleration
 	double g=10;
+	//air resistance
 	double coeff;
-	
-	public Droplet() {
-		//start position
-		x=230;
-		y=80;
-		ay=g;
-		//default 
-		diam=5;
-		dist=32;
-		volts=5081;
-	}
+	//buoyancy force
+	double bF;
+	//for predictor corrector
+	double vpre;
+
 	public Droplet(AnimationPanel Panel) {
 		//start position
-		x=(int)Panel.getWidth()/2;
-		y=0;
+		x=Panel.getWidth()/2;
+		y=0.001;
 		vy=0;
+		vpre=vy;
+		//Start parameters in meters
+		diam=Math.pow(10, -6);
+		double r=diam/2;
+		double vol=4/3*3.1416*r*r*r;
+		m=vol*920;
+		bF=vol*1.2*g;
 		ay=g;
-		diam=10;
-		coeff=6*3.1416*diam*0.5*0.005;
-		//default 
+		coeff=6*3.1416*r*17*Math.pow(10, -6);
+	}
 	
-		dist=32;//for calculations (in [m]) realdist=dist/(2*1000); aby zachowa� skal� rysunku, nale�a�oby tysi�ckrotnie zwi�kszy� odleg�o�c mi�dzy ok�adkami kondensatora
-		volts=5081;
+
+	public void nextPos(double dt,AnimationPanel Panel, SliderTexted Voltage){
+
+		int n=100000;
+		System.out.println(dt/n+"\n"+vy);
+		for(int i=0;i<n;++i){
+			if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))ay=g-(Voltage.getValue()/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
+			else ay=g-bF/m-vy*coeff/m;
+		vy+=ay*dt/n;
+		y+=vy*dt/n;
+		}
+
 	}
-	/*public static void main(String[] args) {
+
 		
-	}*/
-	public void nextPos(double dt,AnimationPanel Panel, JSlider Voltage){
-		if(y>(Panel.getHeight()-Panel.gap-60))ay=g-(((double)Voltage.getValue())/Panel.gap*charge)-vy*coeff;
-		else ay=g-vy*coeff;
-		vy+=ay*dt;
-		y+=vy*dt+ay*dt*dt/2;
+	
+	//return acceleration given velocity and field strength
+	public double acc(double vv, double field){
+		return g-field*charge/m-(vv*coeff/m)-bF/m;
 	}
+	
+	
 	public void setx(int X){
 		x=X;
 	}
+	public void setCoeff(double viscosity){
+		coeff=6*3.1416*diam*0.5*viscosity*Math.pow(10, -6);
+	}
 	public void reset(){
-		y=0;
+		y=0.001;
 		vy=0;
 		ay=g;
-		charge=((int)((new Random()).nextInt(100)))*0.016;
+		charge=((new Random()).nextInt(4)+1)*e;
+	}
+	
+	public void nextPosPre(double dt,AnimationPanel Panel, SliderTexted Voltage){
+		int n=100000;
+		double field=Voltage.getValue()/(Panel.gap/Panel.scl);
+		dt/=n;
+		
+		for(int i=0;i<n;++i){
+			if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60)){
+				vpre=vy+acc(vy,field)*dt;
+				ay=0.5*(acc(vy,field)+acc(vpre,field));
+			}
+			else{
+				vpre=vy+acc(vy,0)*dt;
+				ay=0.5*(acc(vy,0)+acc(vpre,0));
+			}			
+			vy+=ay*dt;
+			y+=vy*dt+ay*dt*dt/2;
+		}
 	}
 	
 }

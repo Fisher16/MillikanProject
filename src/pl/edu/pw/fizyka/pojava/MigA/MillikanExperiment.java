@@ -1,5 +1,7 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
+import java.awt.Dimension;
+
 import javax.swing.*;
 
 /**
@@ -16,11 +18,16 @@ public class MillikanExperiment extends JFrame {
 		setTitle("Millikan Exp");
 		setSize(640, 480);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+		setMinimumSize(new Dimension(640,480));
 		JTabbedPane tPane = new JTabbedPane();
 		AnimationInterface exp=new AnimationInterface();
+		
 		tPane.addTab("Experiment",exp);
+		
 		tPane.addTab("Charts", new Chart(exp.velData,exp.accData,exp.posData,exp.dC));
+		
+		//JPanel inf=new JPanel();
+		tPane.addTab("Info",new Info());
         this.add(tPane);
         
 		

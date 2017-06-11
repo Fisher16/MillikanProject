@@ -1,21 +1,32 @@
 package pl.edu.pw.fizyka.pojava.MigA;
-import java.awt.BorderLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import javax.swing.*;
 
-//import java.lang.*;
 import org.jfree.chart.*;
-import org.jfree.chart.ChartUtilities;
+
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.ChartFactory;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import java.io.File;
-import pl.edu.pw.fizyka.pojava.MigA.AnimationInterface;
+
+
+/**
+ * Panel for charts and data handling. 
+ * 
+ * @author AR MK
+ *
+ */
+
 public class Chart extends JPanel{
 
 	/**
@@ -23,43 +34,7 @@ public class Chart extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Chart() {
-		// Create a simple XY chart
-		 XYSeries series = new XYSeries("pomiar");
-		 series.add(1, 0.5);
-		 series.add(2, 2);
-		 series.add(3, 4);
-		 series.add(4, 9);
-		 series.add(5, 10);
-		 series.add(5.05, 10);
-		 series.add(10, 0);
-		 // Add the series to your data set
-		 XYSeriesCollection dataset = new XYSeriesCollection();
-		 dataset.addSeries(series);
-		 // Generate the graph
-		 JFreeChart chart = ChartFactory.createXYLineChart(
-		 "VelocityChart", // Title
-		 "time", // x-axis Label
-		 "velocity", // y-axis Label
-		 dataset, // Dataset
-		 PlotOrientation.VERTICAL, // Plot Orientation
-		 true, // Show Legend
-		 true, // Use tooltips
-		 false // Configure chart to generate URLs?
-		 );
 
-		 //JPanel jPanel1 = new JPanel();
-		 this.setLayout(new java.awt.FlowLayout());
-		  
-		 ChartPanel CP = new ChartPanel(chart);
-		 //this.setVisible(true);
-		 //initComponents();
-		 this.add(CP);
-		 this.validate();
-		 
-	}
-	
-	
 	public Chart(XYSeries vel,XYSeries acc,XYSeries pos,DropCharge dC){
 		
 	//VEL
@@ -84,6 +59,7 @@ public class Chart extends JPanel{
 		 ChartPanel velCP = new ChartPanel(chartVel);
 		 //this.setVisible(true);
 		 //initComponents();
+		 velCP.setPopupMenu(null);
 		 this.add(velCP);//,BorderLayout.EAST
 		 
 	//ACC
@@ -107,6 +83,7 @@ public class Chart extends JPanel{
 		 ChartPanel accCP = new ChartPanel(chartAcc);
 		 //this.setVisible(true);
 		 //initComponents();
+		 accCP.setPopupMenu(null);
 		 this.add(accCP);//,BorderLayout.WEST
 		 
 		 this.validate();
@@ -132,14 +109,15 @@ public class Chart extends JPanel{
 		 ChartPanel posCP = new ChartPanel(chartPos);
 		 //this.setVisible(true);
 		 //initComponents();
+		 posCP.setPopupMenu(null);
 		 this.add(posCP);//,BorderLayout.CENTER
 		 
 		 this.validate();
 	//Text
 		 JPanel outPanel=new JPanel();
 		 outPanel.setLayout(new java.awt.GridLayout(2,2));
-		 outPanel.add(new JLabel("Calculated Charge: "));
-		 JTextField calCharge=new JTextField(Double.toString(dC.calC));
+		 outPanel.add(new JLabel("Calculated Charge [e]: "));
+		 JTextField calCharge=new JTextField(Double.toString(dC.ratio()));
 		 outPanel.add(calCharge);
 		
 		 
@@ -148,12 +126,37 @@ public class Chart extends JPanel{
 			calcButton.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
-			    	calCharge.setText(Double.toString(dC.calC));
-	//		    	System.out.println(dC.calC);
+			    	calCharge.setText(Double.toString(dC.ratio()));
 			    }
 			});
 		 
-//TO DO
+
+	//Save
+			JButton saveButton = new JButton("Save");
+			 outPanel.add(saveButton);
+				saveButton.addActionListener(new ActionListener() {
+				    @Override
+				    public void actionPerformed(ActionEvent e) {
+				    	//saving charts&charge
+				    	File fvel = new File("VelocityChart.jpg");
+				    	File facc = new File("AccelerationChart.jpg");
+				    	File fpos = new File("PositionChart.jpg");
+				    	File fres = new File("results.txt");
+				    	try {
+							ChartUtilities.saveChartAsJPEG(fvel, chartVel, 480, 300);
+							ChartUtilities.saveChartAsJPEG(facc, chartAcc, 480, 300);
+							ChartUtilities.saveChartAsJPEG(fpos, chartPos, 480, 300);
+							Writer writer = new OutputStreamWriter( new FileOutputStream(fres), "UTF-8");
+							BufferedWriter fout = new BufferedWriter(writer);
+							calCharge.write(fout);
+							fout.close();
+							
+						} catch (IOException e1) {
+							
+							e1.printStackTrace();
+						}
+				    }
+				});
 			/*Save button all info x vx ay plus Calculated charge*/
 		 this.add(outPanel);
 		

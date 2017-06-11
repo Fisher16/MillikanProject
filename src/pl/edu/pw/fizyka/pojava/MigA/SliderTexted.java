@@ -6,9 +6,7 @@ import javax.swing.event.*;
 import java.awt.*;
 
 /**
- * Container for slider and text. 
- * 
- * Maybe spinners.
+ * Container for slider and text.
  * 
  * @author MK
  *
@@ -20,6 +18,7 @@ public class SliderTexted extends JPanel {
 	int div;
 	public JTextField text;
 	public JSlider slider;
+	
 	public SliderTexted(){
 		this.setLayout(new FlowLayout());
 		max=1000;
@@ -41,7 +40,6 @@ public class SliderTexted extends JPanel {
 	
 
 	public SliderTexted(int Min,int Max,int Div,int TextSize){
-		//this.setLayout(new FlowLayout());
 		min=Min;
 		max=Max;
 		div=Div;
@@ -54,10 +52,12 @@ public class SliderTexted extends JPanel {
                 text.setText(String.valueOf((double)slider.getValue()/div));
             }
         });
-        
-        this.add(slider);
-        this.add(text);
+        this.setLayout(new BorderLayout());
+        this.add(slider,BorderLayout.CENTER);
+        this.add(text,BorderLayout.EAST);
 	}
+
+	
 	public SliderTexted(int Min,int Max,String s){
 		min=Min;
 		max=Max;
@@ -73,6 +73,8 @@ public class SliderTexted extends JPanel {
         this.add(slider);
         this.add(text);
 	}
+	
+	
 	public double getValue(){
 		return (double)slider.getValue()/div;
 	}

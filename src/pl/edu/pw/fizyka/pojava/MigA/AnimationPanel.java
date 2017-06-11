@@ -1,55 +1,69 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
 import java.awt.*;
-//import java.awt.event.*;
-//import java.awt.geom.Line2D;
+import java.awt.geom.*;
+import java.awt.geom.RoundRectangle2D;
+
 import pl.edu.pw.fizyka.pojava.MigA.Droplet;
 import javax.swing.*;
 
+/**
+ * Animation panel, graphic visualization functions. 
+ * 
+ * @author MK
+ *
+ */
+
+
 public class AnimationPanel extends JPanel  {
 	private static final long serialVersionUID = 3960445104787308557L;
-	int width=this.getWidth();
-	int height=this.getHeight();
-	int gap=0;
+	int gap=24;
 	public Droplet drop=new Droplet(this);
-	
-	
-	//in ms
-	int delay=1000;
-	
-	
+	//true Y scale real always 2.5mm
+	public double scl;
+
 
 	public AnimationPanel() {
 		this.setBackground(Color.darkGray);
-		//this.setGap(12*height/24/2);
-		//System.out.println(Integer.toString((int)drop.x));
 	}
 	
 
 	@Override
 	public void paintComponent(Graphics g) {
-	
+		scl=(double)this.getHeight()/0.0025;
 		//droplet
         Graphics2D graph = (Graphics2D)g;
         graph.clearRect(0, 0, getWidth(), getHeight());            
         graph.setColor(Color.blue);
         drop.setx(this.getWidth()/2);
-        graph.fillOval(drop.x, drop.y, 10,10);     
+        graph.fillOval((int)(drop.x), (int)(drop.y*scl), 10,10);
         
-        /*// capacitor
-		
-	    Line2D lin = new Line2D.Float(180, 400, 300, 400);
-	    Line2D lin2 = new Line2D.Float(180, 400-Droplet.dist, 300, 400-Droplet.dist);
-	    graph.draw(lin);
-	    graph.draw(lin2);*/
-        
-	    //cap
+	    //capacitor
 	    g.setColor(Color.BLACK);
 		int w=200;
         g.fillRect((this.getWidth()-w)/2,this.getHeight()-50, w,20);
         g.drawRect((this.getWidth()-w)/2,this.getHeight()-gap-70, w,20);
 	   
-
+        //radiation source
+        Graphics2D gh = (Graphics2D)g;
+        g.setColor(Color.GRAY);
+        gh.fill(new RoundRectangle2D.Double(10,this.getHeight()-gap-150,30, 15, 5, 5));
+       
+        CubicCurve2D c = new CubicCurve2D.Double();
+        CubicCurve2D d = new CubicCurve2D.Double();
+        CubicCurve2D e = new CubicCurve2D.Double();
+  
+	    c.setCurve(40, this.getHeight()-gap-145, 45,
+	    		 this.getHeight()-gap-155, 50, this.getHeight()-gap-135, 60, this.getHeight()-gap-145);
+	    d.setCurve(40, this.getHeight()-gap-140, 45,
+	    		 this.getHeight()-gap-150, 50, this.getHeight()-gap-130, 60, this.getHeight()-gap-140);
+	    e.setCurve(40, this.getHeight()-gap-135, 45,
+	    		 this.getHeight()-gap-145, 50, this.getHeight()-gap-125, 60, this.getHeight()-gap-135);
+	    g.setColor(Color.black);
+	    gh.draw(c);
+	    gh.draw(d);
+	    gh.draw(e);
+	
 	}
 	
 	
@@ -57,54 +71,6 @@ public class AnimationPanel extends JPanel  {
 		gap=Gap;
 		this.repaint();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	ActionListener taskPerformer = new ActionListener() {
-	      public void actionPerformed(ActionEvent evt) {
-	    	//fall stop in capacitor 
-	        	if(y>=halfcap && Droplet.volts == 5081){
-	        		stop();
-		        
-		        	}
-		        	
-	            //touching the ground
-	        	else if(y + Droplet.diam+10 > getHeight() || y < 0){
-	        		stop();
-	        	}
-	        	else{
-	        		repaint();
-	        	}
-	      }
-	  };
-	  new Timer(delay, taskPerformer).start();
-
-/*	private void print(Graphics2D g) {
-		//drawing
-	    g.fillOval((int) dropx, (int) dropy, 2,2);
-	}*/
-	
-	/*public void iterate(double dt){
-	    List<Ball> balls = ballContainer.getBalls();
-	    for (int ii=0;ii<balls.size(); ii++){
-	        Ball b1 = balls.get(ii);
-	        checkCollisions(ballContainer, b1, ii);
-	        b1.iteration(dt);
-	    }
-	}*/
-	
 	
 
 	
