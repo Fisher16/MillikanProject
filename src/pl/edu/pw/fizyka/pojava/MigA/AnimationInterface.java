@@ -32,6 +32,9 @@ public class AnimationInterface extends JPanel {
 	XYSeries accData = new XYSeries("Acceleration");
 	XYSeries posData = new XYSeries("Position");
 	
+	//Outside, so when saving animation stop
+	Timer timer;
+	JButton startButton;
 	
 	DropCharge dC=new DropCharge();
 	public AnimationInterface(){
@@ -100,7 +103,7 @@ public class AnimationInterface extends JPanel {
 		c.weightx = 2;
 		c.weighty=1;
 		c.gridy=1;
-		this.add(new JLabel("Viscosity [Pa·s]"),c);
+		this.add(new JLabel("Air viscosity [uPa*s]"),c);
 		c.gridy=3;
 		this.add(new JLabel("Distance [10^-4m]"),c);
 		c.gridy=5;
@@ -158,36 +161,7 @@ public class AnimationInterface extends JPanel {
         });
 		
 		
-	//Animation
-		
-		Timer timer = new Timer(10, new ActionListener() {
-	        @Override
-	        public void actionPerformed(ActionEvent e) {
-	        	animationPanel.repaint();
-	            if(animationPanel.drop.y>-10&&(animationPanel.drop.y*animationPanel.scl)<(animationPanel.getHeight()-60)){
-	            	animationPanel.drop.nextPosPre(tempo, animationPanel, sVol);
-	            	animationPanel.repaint();
-	            }else {
-	            	animationPanel.drop.reset();
-	            	tm=0;
-	            	velData.clear();
-	            	accData.clear();
-	            	posData.clear();
-	            }
-	            
-	            tm+=10;
-	            if(tm%50==0){
-	            	velData.add(tm/1000,animationPanel.drop.vy);
-	            	accData.add(tm/1000,animationPanel.drop.ay);
-	            	posData.add(tm/1000,animationPanel.drop.y);
-	            	dC.calC=(animationPanel.drop.m*animationPanel.drop.g-animationPanel.drop.bF)*
-	            			(animationPanel.gap/animationPanel.scl)/sVol.getValue();
-	            }
-	            if(sVis.getValue()==0){sTime.slider.setValue(1);sTime.slider.setEnabled(false);}
-	            else sTime.slider.setEnabled(true);
-
-	        }
-	    });
+	
 		
 		//Buttons
 		c.gridx=3;
@@ -202,7 +176,7 @@ public class AnimationInterface extends JPanel {
 		buttonPanel.setLayout(new BorderLayout());
 		
 		//On/Off button
-		JButton startButton = new JButton("ON");
+		startButton = new JButton("ON");
 		startButton.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -234,10 +208,46 @@ public class AnimationInterface extends JPanel {
 		
 		this.add(buttonPanel,c);
 		
+		//Animation
+		
+				timer = new Timer(10, new ActionListener() {
+			        @Override
+			        public void actionPerformed(ActionEvent e) {
+			        	if(dC.saving){
+			        		startButton.doClick();;
+			        		timer.stop();
+			        	}
+		     	
+			        	animationPanel.getToolkit().sync();
+			        	animationPanel.repaint();
+			        	
+			            if(animationPanel.drop.y>-10&&(animationPanel.drop.y*animationPanel.scl)<(animationPanel.getHeight()-60)){
+			            	animationPanel.drop.nextPosPre(tempo, animationPanel, sVol);
+			            	animationPanel.repaint();
+			            }else {
+			            	animationPanel.drop.reset();
+			            	tm=0;
+			            	velData.clear();
+			            	accData.clear();
+			            	posData.clear();
+			            }
+			            
+			            tm+=10;
+			            if(tm%50==0){
+			            	velData.add(tm/1000,animationPanel.drop.vy);
+			            	accData.add(tm/1000,animationPanel.drop.ay);
+			            	posData.add(tm/1000,animationPanel.drop.y);
+			            	dC.calC=(animationPanel.drop.m*animationPanel.drop.g-animationPanel.drop.bF)*
+			            			(animationPanel.gap/animationPanel.scl)/sVol.getValue();
+			            }
+			            if(sVis.getValue()==0){sTime.slider.setValue(1);sTime.slider.setEnabled(false);}
+			            else sTime.slider.setEnabled(true);
+
+			        }
+			    });
 		
 		
-		
-//TO DO
+//AG
 		/*Mouse Listener for information placeholder*/
 		//add mouse listener to capacitor&drop separately
 		

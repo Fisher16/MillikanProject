@@ -27,7 +27,7 @@ public class MillikanExperiment extends JFrame {
 		tPane.addTab("Charts", new Chart(exp.velData,exp.accData,exp.posData,exp.dC));
 		
 		//JPanel inf=new JPanel();
-		tPane.addTab("Info",new Info());
+		tPane.addTab("Info",new JPanel());
         this.add(tPane);
         
 		
