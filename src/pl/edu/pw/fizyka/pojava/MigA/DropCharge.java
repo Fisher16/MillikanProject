@@ -11,6 +11,7 @@ package pl.edu.pw.fizyka.pojava.MigA;
  */
 
 public class DropCharge {
+	//calculated Charge
 	public double calC;
 	//flag for stopping animation
 	public boolean saving=false;

@@ -19,26 +19,6 @@ public class SliderTexted extends JPanel {
 	public JTextField text;
 	public JSlider slider;
 	
-	public SliderTexted(){
-		this.setLayout(new FlowLayout());
-		max=1000;
-		min=1;
-		div=100;
-		textSize=3;
-		text=new JTextField(String.valueOf((double)max/2/div),textSize);
-		slider= new JSlider(min,max);
-        slider.addChangeListener(new ChangeListener(){
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                text.setText(String.valueOf((double)slider.getValue()/div));
-            }
-        });
-        
-        this.add(slider);
-        this.add(text);
-	}
-	
-
 	public SliderTexted(int Min,int Max,int Div,int TextSize){
 		min=Min;
 		max=Max;
@@ -58,6 +38,29 @@ public class SliderTexted extends JPanel {
 	}
 
 	
+//Not used
+	public SliderTexted(){
+		this.setLayout(new FlowLayout());
+		max=1000;
+		min=1;
+		div=100;
+		textSize=3;
+		text=new JTextField(String.valueOf((double)max/2/div),textSize);
+		slider= new JSlider(min,max);
+        slider.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                text.setText(String.valueOf((double)slider.getValue()/div));
+            }
+        });
+        
+        this.add(slider);
+        this.add(text);
+	}
+//Not used
+
+	
+//Experimental
 	public SliderTexted(int Min,int Max,String s){
 		min=Min;
 		max=Max;
@@ -73,8 +76,9 @@ public class SliderTexted extends JPanel {
         this.add(slider);
         this.add(text);
 	}
+//Experimental
 	
-	
+//override for simplicity
 	public double getValue(){
 		return (double)slider.getValue()/div;
 	}

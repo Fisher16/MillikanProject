@@ -37,7 +37,9 @@ public class AnimationInterface extends JPanel {
 	JButton startButton;
 	
 	DropCharge dC=new DropCharge();
+	
 	public AnimationInterface(){
+//AR&MK
 		//visual initialization
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c =new GridBagConstraints();
@@ -159,10 +161,8 @@ public class AnimationInterface extends JPanel {
             	tempo=0.001*(sTime.getValue());
             }
         });
-		
-		
-	
-		
+//AR&MK
+//MK
 		//Buttons
 		c.gridx=3;
 		c.gridwidth=1;
@@ -245,17 +245,15 @@ public class AnimationInterface extends JPanel {
 
 			        }
 			    });
-		
-		
-//AG
+//MK
+//AR
 		/*Mouse Listener for information placeholder*/
 		//add mouse listener to capacitor&drop separately
 		
 		  this.addMouseListener(new MouseListener() {
 
           @Override
-          public void mouseReleased(MouseEvent e) { }
-
+          public void mouseReleased(MouseEvent e) {}
           @Override
           public void mousePressed(MouseEvent e) {}
 
@@ -267,11 +265,7 @@ public class AnimationInterface extends JPanel {
           }
 
           @Override
-          public void mouseEntered(MouseEvent e) {
-          	
-          	
-          }
-
+          public void mouseEntered(MouseEvent e) {}
           @Override
           public void mouseClicked(MouseEvent e) {}
       });
@@ -306,7 +300,4 @@ public class AnimationInterface extends JPanel {
 	});
 	}
 	
-	
-
-
 }

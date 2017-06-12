@@ -10,12 +10,13 @@ import javax.swing.*;
 /**
  * Animation panel, graphic visualization functions. 
  * 
- * @author MK
+ * @author MK AR
  *
  */
 
 
 public class AnimationPanel extends JPanel  {
+//MK
 	private static final long serialVersionUID = 3960445104787308557L;
 	int gap=24;
 	public Droplet drop=new Droplet(this);
@@ -43,7 +44,8 @@ public class AnimationPanel extends JPanel  {
 		int w=200;
         g.fillRect((this.getWidth()-w)/2,this.getHeight()-50, w,20);
         g.drawRect((this.getWidth()-w)/2,this.getHeight()-gap-70, w,20);
-	   
+//MK
+//AR	   
         //radiation source
         Graphics2D gh = (Graphics2D)g;
         g.setColor(Color.GRAY);
@@ -63,7 +65,6 @@ public class AnimationPanel extends JPanel  {
 	    gh.draw(c);
 	    gh.draw(d);
 	    gh.draw(e);
-	
 	}
 	
 	
