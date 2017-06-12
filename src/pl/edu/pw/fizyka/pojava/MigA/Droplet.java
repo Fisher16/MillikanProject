@@ -56,8 +56,6 @@ public class Droplet {
 		}
 
 	}
-
-		
 	
 	//return acceleration given velocity and field strength
 	public double acc(double vv, double field){

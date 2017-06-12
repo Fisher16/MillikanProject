@@ -23,9 +23,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class Chart extends JPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 
