@@ -62,8 +62,7 @@ public class Info extends JPanel {
 	    JScrollPane scroll = new JScrollPane(phField);
 	    scroll.setBorder(null);
 	    ph.add(scroll);
-	    
-	    ImageIcon scheme = new ImageIcon("img/scheme.jpg");
+	    ImageIcon scheme = new ImageIcon(getClass().getClassLoader().getResource("scheme.jpg"));
 		JLabel sLabel = new JLabel();
 		sLabel.setIcon(scheme);
 		sLabel.setIconTextGap(15);
