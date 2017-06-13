@@ -16,19 +16,17 @@ public class MillikanExperiment extends JFrame {
 	
 	public MillikanExperiment(){
 		setTitle("Millikan Exp");
-		setSize(640, 480);
+		setSize(700, 500);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setMinimumSize(new Dimension(640,480));
+		setMinimumSize(new Dimension(700,500));
 		JTabbedPane tPane = new JTabbedPane();
 		AnimationInterface exp=new AnimationInterface();
 		
 		tPane.addTab("Experiment",exp);
 		
 		tPane.addTab("Charts", new Chart(exp.velData,exp.accData,exp.posData,exp.dC));
-		
-//TO DO
-		//JPanel inf=new JPanel();
-		tPane.addTab("Info",new JPanel());
+
+		tPane.addTab("Info",new Info());
         this.add(tPane);
         
 		
