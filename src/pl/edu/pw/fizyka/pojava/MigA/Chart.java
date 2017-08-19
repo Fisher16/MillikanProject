@@ -1,5 +1,6 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -10,6 +11,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 import org.jfree.chart.*;
 
@@ -17,8 +21,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.ChartFactory;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-
-
 
 /**
  * Panel for charts and data handling. 
@@ -28,15 +30,12 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 
 public class Chart extends JPanel{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	private JFileChooser dialog = new JFileChooser(System.getProperty("user.dir"));
 
 
 	public Chart(XYSeries vel,XYSeries acc,XYSeries pos,DropCharge dC){
-		
+//AR
 	//VEL
 		 // Add the series to your data set
 		 XYSeriesCollection datasetVel = new XYSeriesCollection();
@@ -44,21 +43,18 @@ public class Chart extends JPanel{
 		 // Generate the graph
 		 JFreeChart chartVel = ChartFactory.createXYLineChart(
 		 "VelocityChart", // Title
-		 "time", // x-axis Label
-		 "velocity", // y-axis Label
+		 "time [s]", // x-axis Label
+		 "velocity [m/s]", // y-axis Label
 		 datasetVel, // Dataset
 		 PlotOrientation.VERTICAL, // Plot Orientation
 		 true, // Show Legend
 		 true, // Use tooltips
 		 false // Configure chart to generate URLs?
 		 );
-
-		 //JPanel jPanel1 = new JPanel();
+		 
 		 this.setLayout(new java.awt.GridLayout(2,2));
-		  
+  
 		 ChartPanel velCP = new ChartPanel(chartVel);
-		 //this.setVisible(true);
-		 //initComponents();
 		 velCP.setPopupMenu(null);
 		 this.add(velCP);//,BorderLayout.EAST
 		 
@@ -69,22 +65,18 @@ public class Chart extends JPanel{
 		 // Generate the graph
 		 JFreeChart chartAcc = ChartFactory.createXYLineChart(
 		 "AccelerationChart", // Title
-		 "time", // x-axis Label
-		 "acceleration", // y-axis Label
+		 "time [s]", // x-axis Label
+		 "acceleration [m/s^2]", // y-axis Label
 		 datasetAcc, // Dataset
 		 PlotOrientation.VERTICAL, // Plot Orientation
 		 true, // Show Legend
 		 true, // Use tooltips
 		 false // Configure chart to generate URLs?
 		 );
-
-		 //JPanel jPanel1 = new JPanel();
 		 
 		 ChartPanel accCP = new ChartPanel(chartAcc);
-		 //this.setVisible(true);
-		 //initComponents();
 		 accCP.setPopupMenu(null);
-		 this.add(accCP);//,BorderLayout.WEST
+		 this.add(accCP);
 		 
 		 this.validate();
 		 
@@ -95,8 +87,8 @@ public class Chart extends JPanel{
 		 // Generate the graph
 		 JFreeChart chartPos = ChartFactory.createXYLineChart(
 		 "PositionChart", // Title
-		 "time", // x-axis Label
-		 "position", // y-axis Label
+		 "time [s]", // x-axis Label
+		 "position [m]", // y-axis Label
 		 datasetPos, // Dataset
 		 PlotOrientation.VERTICAL, // Plot Orientation
 		 true, // Show Legend
@@ -104,61 +96,108 @@ public class Chart extends JPanel{
 		 false // Configure chart to generate URLs?
 		 );
 
-		 //JPanel jPanel1 = new JPanel();
-		 
 		 ChartPanel posCP = new ChartPanel(chartPos);
-		 //this.setVisible(true);
-		 //initComponents();
 		 posCP.setPopupMenu(null);
-		 this.add(posCP);//,BorderLayout.CENTER
+		 this.add(posCP);
 		 
 		 this.validate();
-	//Text
+//AR	 
+//MK
+	//Result Panel
+		 Border lowerEtched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+		 TitledBorder tBorder = BorderFactory.createTitledBorder(lowerEtched, "Results");
+		 
 		 JPanel outPanel=new JPanel();
-		 outPanel.setLayout(new java.awt.GridLayout(2,2));
+		 outPanel.setBorder(tBorder);
+		 outPanel.setLayout(new java.awt.GridLayout(3,2));
+	//calculated value of e. 
 		 outPanel.add(new JLabel("Calculated Charge [e]: "));
 		 JTextField calCharge=new JTextField(Double.toString(dC.ratio()));
+		 calCharge.setEnabled(false);
+		 calCharge.setDisabledTextColor(Color.BLACK);
 		 outPanel.add(calCharge);
-		
+	//actual speed
+		 outPanel.add(new JLabel("Instant speed [m/s]: "));
 		 
+		 JTextField nowSpeed=new JTextField("0.0");
+		 nowSpeed.setEnabled(false);
+		 nowSpeed.setDisabledTextColor(Color.BLACK);
+		 outPanel.add(nowSpeed);
+		
+	//calculation button
 		 JButton calcButton = new JButton("Calculate");
 		 outPanel.add(calcButton);
 			calcButton.addActionListener(new ActionListener() {
 			    @Override
 			    public void actionPerformed(ActionEvent e) {
 			    	calCharge.setText(Double.toString(dC.ratio()));
+			    	nowSpeed.setText(vel.getItemCount()!=0?
+			    			Double.toString((double)vel.getY(vel.getItemCount()-1)):"0.0");
 			    }
 			});
-		 
-
+//MK 
+//AR&MK
 	//Save
-			JButton saveButton = new JButton("Save");
-			 outPanel.add(saveButton);
-				saveButton.addActionListener(new ActionListener() {
-				    @Override
-				    public void actionPerformed(ActionEvent e) {
+
+		JButton saveButton = new JButton("Save results");
+		 outPanel.add(saveButton);
+			saveButton.addActionListener(new ActionListener() {
+			    @Override
+			    public void actionPerformed(ActionEvent e) {
+			    	dC.saving=true;
+			    	if(dialog.showSaveDialog(null)==JFileChooser.APPROVE_OPTION){
 				    	//saving charts&charge
-				    	File fvel = new File("VelocityChart.jpg");
-				    	File facc = new File("AccelerationChart.jpg");
-				    	File fpos = new File("PositionChart.jpg");
-				    	File fres = new File("results.txt");
+			    		String path=dialog.getSelectedFile().getAbsolutePath();
+			    		File fRes = new File(path);
+			    		
+			    		//data folder creation
+			    		path=dialog.getSelectedFile().getParent();
+			    		File dir = new File(path+"/Data");
+			    		dir.mkdir();
+			    		path+="/Data/";
+				    	File fVel = new File(path+"VelocityChart.jpg");
+				    	File fAcc = new File(path+"AccelerationChart.jpg");
+				    	File fPos = new File(path+"PositionChart.jpg");
+				    	
 				    	try {
-							ChartUtilities.saveChartAsJPEG(fvel, chartVel, 480, 300);
-							ChartUtilities.saveChartAsJPEG(facc, chartAcc, 480, 300);
-							ChartUtilities.saveChartAsJPEG(fpos, chartPos, 480, 300);
-							Writer writer = new OutputStreamWriter( new FileOutputStream(fres), "UTF-8");
+				    	//jpg
+							ChartUtilities.saveChartAsJPEG(fVel, chartVel, 480, 300);
+							ChartUtilities.saveChartAsJPEG(fAcc, chartAcc, 480, 300);
+							ChartUtilities.saveChartAsJPEG(fPos, chartPos, 480, 300);
+						//txt	
+							Writer writer = new OutputStreamWriter( new FileOutputStream(fRes), "UTF-8");
 							BufferedWriter fout = new BufferedWriter(writer);
+							//charge
+							fout.write("Calculated charge [e]: ");
+							//calculate feature
+							calcButton.doClick();
 							calCharge.write(fout);
-							fout.close();
+							fout.newLine();
+							//data
+							fout.write("Time [s]"+"\t"
+									+ "Velocity [m/s]"+"\t"
+									+ "Acceleration[m/s^2]"+"\t"
+									+ "Position [m]");
+							fout.newLine();
+							for(int i=0;i<vel.getItemCount();++i){
+								fout.write(vel.getX(i)+"\t"
+											+vel.getY(i)+"\t"
+											+acc.getY(i)+"\t"
+											+pos.getY(i));
+								fout.newLine();
+							}
 							
-						} catch (IOException e1) {
-							
-							e1.printStackTrace();
-						}
-				    }
-				});
-			/*Save button all info x vx ay plus Calculated charge*/
-		 this.add(outPanel);
+							fout.close();							
+						} 
+				    	catch (IOException e1) {
+				    		e1.printStackTrace();
+				    		dC.saving=false;
+				    		}
+			    	}
+			    	dC.saving=false;
+			    }
+			});
+	 this.add(outPanel);
 		
 	}
 

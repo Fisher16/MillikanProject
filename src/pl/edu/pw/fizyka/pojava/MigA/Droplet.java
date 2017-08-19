@@ -1,7 +1,12 @@
 package pl.edu.pw.fizyka.pojava.MigA;
 import java.util.Random;
 
-
+/**
+ * Data object.
+ * 
+ * @author MK
+ *
+ */
 
 public class Droplet {
 	//position, diameter
@@ -10,7 +15,6 @@ public class Droplet {
 	public double vy;
 	public double ay;
 	public double diam;
-	
 	//parameters
 	//charge
 	double e=1.60217*Math.pow(10,-19);
@@ -19,7 +23,7 @@ public class Droplet {
 	double m;
 	
 	//g acceleration
-	double g=10;
+	double g=9.8;
 	//air resistance
 	double coeff;
 	//buoyancy force
@@ -43,22 +47,23 @@ public class Droplet {
 		coeff=6*3.1416*r*17*Math.pow(10, -6);
 	}
 	
-
+	//simple Euler calculation
+	//old not used
 	public void nextPos(double dt,AnimationPanel Panel, SliderTexted Voltage){
 
 		int n=100000;
 		System.out.println(dt/n+"\n"+vy);
 		for(int i=0;i<n;++i){
-			if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))ay=g-(Voltage.getValue()/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
+			if((Panel.scl*y)>(Panel.getHeight()-Panel.gap-60))
+				ay=g-(Voltage.getValue()/(Panel.gap/Panel.scl)*charge)/m-vy*coeff/m-bF/m;
 			else ay=g-bF/m-vy*coeff/m;
 		vy+=ay*dt/n;
 		y+=vy*dt/n;
 		}
 
 	}
+	//old not used
 
-		
-	
 	//return acceleration given velocity and field strength
 	public double acc(double vv, double field){
 		return g-field*charge/m-(vv*coeff/m)-bF/m;
@@ -68,9 +73,13 @@ public class Droplet {
 	public void setx(int X){
 		x=X;
 	}
+	
+	
 	public void setCoeff(double viscosity){
 		coeff=6*3.1416*diam*0.5*viscosity*Math.pow(10, -6);
 	}
+	
+	
 	public void reset(){
 		y=0.001;
 		vy=0;
@@ -78,6 +87,7 @@ public class Droplet {
 		charge=((new Random()).nextInt(4)+1)*e;
 	}
 	
+	//Predictor corrector (order=1)
 	public void nextPosPre(double dt,AnimationPanel Panel, SliderTexted Voltage){
 		int n=100000;
 		double field=Voltage.getValue()/(Panel.gap/Panel.scl);
